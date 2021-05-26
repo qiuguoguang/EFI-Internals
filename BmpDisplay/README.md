@@ -8,8 +8,8 @@ Running this tool to display a BMP in the Uefi Shell will check to make sure you
 displayable in UEFI.
 
 ## Extention
-Ext1 - Add VBT RAW DATA Dump Extention for Intel Platforms
-Ext2 - Add RW SETUP ITEM Extention for Intel Platforms
+Ext1 - Add VBT RAW DATA Dump Extention for Intel Platforms\n
+Ext2 - Add RW SETUP ITEM Extention for Intel Platforms\n
 Ext3 - Add IA CPU int1 BP test
 
 ## Copyright
