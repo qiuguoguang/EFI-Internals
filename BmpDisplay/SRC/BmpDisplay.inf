@@ -1,0 +1,60 @@
+## @file
+# BmpDisplay.inf
+#
+# A simple UEFI application that displays a user-specified BMP image.
+#
+# Copyright (C) Microsoft Corporation. All rights reserved.
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = BmpDisplay
+  FILE_GUID                      = CBAEADF9-1AED-427E-A1C2-ED079EBAFE4F
+  MODULE_TYPE                    = UEFI_APPLICATION
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = BmpDisplayEntrypoint
+
+[Sources]
+  BmpDisplay.c
+  
+[Sources.Ia32]
+  Ia32/CpuIceBreakpoint.nasm
+  
+[Sources.X64]
+  X64/CpuIceBreakpoint.nasm
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  ShellPkg/ShellPkg.dec
+  ClientOneSiliconPkg/SiPkg.dec
+  AlderLakePlatSamplePkg/PlatformPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  BmpSupportLib
+  MemoryAllocationLib
+  PrintLib
+  ShellLib
+  UefiApplicationEntryPoint
+  UefiBootServicesTableLib
+  UefiLib
+  UefiRuntimeServicesTableLib
+
+[Guids]
+  gCpuSetupVariableGuid
+  gSaSetupVariableGuid
+  gPchSetupVariableGuid
+  gSetupVariableGuid
+
+[Protocols]
+  gEfiGraphicsOutputProtocolGuid    ## CONSUMES
+  gGopPolicyProtocolGuid            ## CONSUMES
+
+[Depex]
+  gEfiGraphicsOutputProtocolGuid    AND
+  gEfiVariableArchProtocolGuid      AND
+  gEfiVariableWriteArchProtocolGuid
