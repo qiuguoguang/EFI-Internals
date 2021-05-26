@@ -1,0 +1,5 @@
+Record how to create folders/directories in github web ui?
+
+1. using create new file with $repo/DIR-to-Create/SampleFileName
+
+2. using upload files with Drag and Drop from External Location which have DIR Structure[each DIR will contain at least one file in it]
