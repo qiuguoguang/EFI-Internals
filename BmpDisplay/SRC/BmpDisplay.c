@@ -58,11 +58,11 @@ PrintUsage (
   Print (
     L"%a Version 1.0\n"
     L"Copyright (C) Microsoft Corporation. All rights reserved.\n"
-	L"Copyright (C) PTEC MCH. All rights reserved.\n"
+    L"Copyright (C) PTEC MCH. All rights reserved.\n"
     L"\n"
     L"Displays a BMP image.\n"
-	L"&Dump VBT RAW DATA with -o option\n"
-	L"&Rw SETUP ITEM with -v option\n"
+    L"&Dump VBT RAW DATA with -o option\n"
+    L"&Rw SETUP ITEM with -v option\n"
     L"\n"
     L"usage: BmpDisplay -i inputfile\n"
     L"  -i    Specifies the BMP input file path.\n"
@@ -131,9 +131,9 @@ ParseCommandLine (
   AsciiStrToUnicodeStrS("VBT.bin", VBT, sizeof(VBT) / sizeof(CHAR16));
   if (ShellCommandLineGetFlag (Package, L"-o")) {
     //Status = GopVbtDump (L"VBT.bin");
-	Status = GopVbtDump (VBT);
+    Status = GopVbtDump (VBT);
     if(!EFI_ERROR(Status)){
-	  Print(L"GOP VBT dumped successfully\n");
+      Print(L"GOP VBT dumped successfully\n");
       Status = EFI_SUCCESS;
     }
     goto Done;
@@ -141,7 +141,7 @@ ParseCommandLine (
   
   AsciiStrToUnicodeStrS("FprrEnable", ITEM, sizeof(ITEM) / sizeof(CHAR16));
   if (ShellCommandLineGetFlag (Package, L"-v")) {
-	RwSetupItem (ITEM);
+    RwSetupItem (ITEM);
     goto Done;
   }
 
@@ -273,7 +273,7 @@ void RwSetupItem(IN CHAR16     *Name)
 
   if (EFI_ERROR(Status)) 
   {
-	Print(L"Get Intel CpuSetup Error\n");
+    Print(L"Get Intel CpuSetup Error\n");
     return;
   }
 
@@ -288,7 +288,7 @@ void RwSetupItem(IN CHAR16     *Name)
    
   if (EFI_ERROR(Status)) 
   {
-	Print(L"Get Intel SaSetup Error\n");
+    Print(L"Get Intel SaSetup Error\n");
     return;
   }
 #endif
@@ -303,7 +303,7 @@ void RwSetupItem(IN CHAR16     *Name)
    
   if (EFI_ERROR(Status)) 
   {
-	Print(L"Get Intel PchSetup Error\n");
+    Print(L"Get Intel PchSetup Error\n");
     return;
   }
 
@@ -320,7 +320,7 @@ void RwSetupItem(IN CHAR16     *Name)
     }
 
     Print(L"%c",Key.UnicodeChar);
-	CpuIceBreakpoint();
+    CpuIceBreakpoint();
 	
     gBS->WaitForEvent (1, &gST->ConIn->WaitForKey, &Index);
   }
@@ -329,7 +329,7 @@ void RwSetupItem(IN CHAR16     *Name)
 
   if (Key.UnicodeChar != CHAR_CARRIAGE_RETURN) {
     Print(L"Invalid Input Key\n");
-	return;
+    return;
   }
 
   if (PchSetup.FprrEnable == 1) {
@@ -351,7 +351,7 @@ void RwSetupItem(IN CHAR16     *Name)
 				  
   if (EFI_ERROR(Status)) 
   {
-	Print(L"Set CpuSetup Error\n");
+    Print(L"Set CpuSetup Error\n");
     return;
   }
 
@@ -365,7 +365,7 @@ void RwSetupItem(IN CHAR16     *Name)
 				  
   if (EFI_ERROR(Status)) 
   {
-	Print(L"Set SaSetup Error\n");
+    Print(L"Set SaSetup Error\n");
     return;
   }
 #endif
@@ -379,7 +379,7 @@ void RwSetupItem(IN CHAR16     *Name)
 				  
   if (EFI_ERROR(Status)) 
   {
-	Print(L"Set PchSetup Error\n");
+    Print(L"Set PchSetup Error\n");
     return;
   }
 
