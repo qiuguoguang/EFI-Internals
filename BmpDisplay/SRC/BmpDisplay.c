@@ -212,7 +212,7 @@ GopVbtDump(IN CHAR16     *Name)
   UINT32                       Size;
   EFI_STATUS                   Status;
   
-  //DEBUG ((DEBUG_INFO, "[GopVbtDump][PTEC][CN][CE][MCH] Locate GopPolicy and GetVbtData\n"));
+  //DEBUG ((DEBUG_INFO, "[GopVbtDump][PTEC][MCH] Locate GopPolicy and GetVbtData\n"));
  
   //
   // Locate the GOP Policy Protocol.
