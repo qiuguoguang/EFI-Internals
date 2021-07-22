@@ -38,6 +38,7 @@ EFIAPI
 CpuIceBreakpoint();
 
 EFI_STATUS GopVbtDump(IN CHAR16     *Name);
+EFI_STATUS PrintPciCfg (UINT8 BusNo, UINT8 DevNo, UINT8 FuncNo);
 void RwSetupItem(IN CHAR16     *Name);
 
 STATIC CONST SHELL_PARAM_ITEM mParamList[] = {
