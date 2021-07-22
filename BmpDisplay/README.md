@@ -13,6 +13,7 @@ Ext1 - Add VBT RAW DATA Dump Extention for Intel Platforms
 Ext2 - Add RW SETUP ITEM Extention for Intel Platforms
 
 Ext3 - Add IA CPU int1 BP test
+Ext4 - Add PciCfg Print
 
 ## Copyright
 
