@@ -6,11 +6,13 @@
   2021/05/18 PTEC MCH - Add VBT RAW DATA Dump Extention for Intel Platforms
   2021/05/18 PTEC MCH - Add RW SETUP ITEM Extention for Intel Platforms
   2021/05/21 PTEC MCH - Add IA CPU int1 BP test
+  2021/07/22 PTEC MCH - Add Print Pci Cfg Extention
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
+#include <Uefi.h>
 #include <PiDxe.h>
 #include <Library/BaseLib.h>
 #include <Library/BaseMemoryLib.h>
@@ -21,6 +23,7 @@
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/UefiRuntimeServicesTableLib.h>
 #include <Library/UefiLib.h>
+#include <Library/IoLib.h>
 
 //#include <Library/DebugLib.h>
 #include <Protocol/GopPolicy.h>
@@ -41,6 +44,7 @@ STATIC CONST SHELL_PARAM_ITEM mParamList[] = {
   {L"-?",                      TypeFlag},   // ? - Help
   {L"-h",                      TypeFlag},   // h - Help
   {L"-o",                      TypeFlag},   // o - VBT Dump
+  {L"-p",                      TypeFlag},   // p - PciCfg Dump
   {L"-v",                      TypeFlag},   // v - RW Designated Setup Item
   {L"-i",                      TypeValue},  // i - Input file path
   {NULL,                       TypeMax},
@@ -62,6 +66,7 @@ PrintUsage (
     L"\n"
     L"Displays a BMP image.\n"
     L"&Dump VBT RAW DATA with -o option\n"
+    L"&Print PciCfg with -p option\n"
     L"&Rw SETUP ITEM with -v option\n"
     L"\n"
     L"usage: BmpDisplay -i inputfile\n"
@@ -99,6 +104,13 @@ ParseCommandLine (
 
   CHAR16                VBT[10];
   CHAR16                ITEM[20];
+  UINT8                 BusNo;
+  UINT8                 DevNo;
+  UINT8                 FuncNo;
+  
+  BusNo = 0;
+  DevNo = 6;
+  FuncNo = 0;
 
   Package = NULL;
   ProblemParam = NULL;
@@ -134,6 +146,16 @@ ParseCommandLine (
     Status = GopVbtDump (VBT);
     if(!EFI_ERROR(Status)){
       Print(L"GOP VBT dumped successfully\n");
+      Status = EFI_SUCCESS;
+    }
+    goto Done;
+  }
+  
+  if (ShellCommandLineGetFlag (Package, L"-p")) {
+    //Status = PrintPciCfg (UINT8 BusNo, UINT8 DevNo, UINT8 FuncNo);
+    Status = PrintPciCfg (BusNo, DevNo, FuncNo);
+    if(!EFI_ERROR(Status)){
+      Print(L"Print PciCfg successfully\n");
       Status = EFI_SUCCESS;
     }
     goto Done;
@@ -245,6 +267,44 @@ GopVbtDump(IN CHAR16     *Name)
   }
   
   return Status;
+}
+
+EFI_STATUS
+PrintPciCfg (UINT8 BusNo, UINT8 DevNo, UINT8 FuncNo)
+{
+   UINT32 DevAddr;
+   UINT8  PciData8;
+
+   UINT8  Bus;
+   UINT8  Dev;
+   UINT8  Func;
+   UINT16 Reg;
+   UINT8  Index;
+
+   DevAddr = 0x0;
+   PciData8 = 0x0;
+   Bus = BusNo;
+   Dev = DevNo;
+   Func = FuncNo;
+   Reg = 0x0;
+   Index = 0x0;
+
+   Print(L"\n");
+   for (Reg = 0x00; Reg < 0x100; Reg = Reg + 4)
+   {
+     for(Index = 0x0; Index < 4; Index ++)
+     {
+       DevAddr =  0x80000000 + (Bus << 16) + (Dev << 11) + (Func << 8) + (Reg + Index);
+       IoWrite32(0xCF8, DevAddr);
+       PciData8 = IoRead8(0xCFC + Index);
+       Print(L"%02x ",PciData8);
+       if(((Reg + Index) % 0x10) == 0xF){
+          Print(L"\n");
+       }
+     }
+   }
+
+   return EFI_SUCCESS;
 }
 
 void RwSetupItem(IN CHAR16     *Name)
