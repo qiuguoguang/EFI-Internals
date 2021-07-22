@@ -43,6 +43,7 @@
   UefiBootServicesTableLib
   UefiLib
   UefiRuntimeServicesTableLib
+  IoLib
 
 [Guids]
   gCpuSetupVariableGuid
