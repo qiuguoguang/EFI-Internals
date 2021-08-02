@@ -24,6 +24,7 @@
 #include <Library/UefiRuntimeServicesTableLib.h>
 #include <Library/UefiLib.h>
 #include <Library/IoLib.h>
+#include <Library/PciLib.h>
 
 //#include <Library/DebugLib.h>
 #include <Protocol/GopPolicy.h>
@@ -291,6 +292,7 @@ PrintPciCfg (UINT8 BusNo, UINT8 DevNo, UINT8 FuncNo)
    Index = 0x0;
 
    Print(L"\n");
+#if 0
    for (Reg = 0x00; Reg < 0x100; Reg = Reg + 4)
    {
      for(Index = 0x0; Index < 4; Index ++)
@@ -304,6 +306,34 @@ PrintPciCfg (UINT8 BusNo, UINT8 DevNo, UINT8 FuncNo)
        }
      }
    }
+#else
+   for (Reg = 0x00; Reg < 0x100; Reg = Reg + 4)
+   {
+     for(Index = 0x0; Index < 4; Index ++)
+     {
+       DevAddr = PCI_LIB_ADDRESS (0x0,0x6,0x0,(Reg + Index));
+       PciData8 = PciRead8 (DevAddr);
+       Print(L"%02x ",PciData8);
+       if(((Reg + Index) % 0x10) == 0xF){
+          Print(L"\n");
+       }
+     }
+   }
+   Print(L"\n");
+   Print(L"Start Dumping Pcie Extented CFG Space\n");
+   for (Reg = 0x100; Reg < 0x1000; Reg = Reg + 4)
+   {
+     for(Index = 0x0; Index < 4; Index ++)
+     {
+       DevAddr = PCI_LIB_ADDRESS (0x0,0x6,0x0,(Reg + Index));
+       PciData8 = PciRead8 (DevAddr);
+       Print(L"%02x ",PciData8);
+       if(((Reg + Index) % 0x10) == 0xF){
+          Print(L"\n");
+       }
+     }
+   }	
+#endif
 
    return EFI_SUCCESS;
 }
