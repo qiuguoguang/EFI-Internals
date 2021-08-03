@@ -311,7 +311,7 @@ PrintPciCfg (UINT8 BusNo, UINT8 DevNo, UINT8 FuncNo)
    {
      for(Index = 0x0; Index < 4; Index ++)
      {
-       DevAddr = PCI_LIB_ADDRESS (0x0,0x6,0x0,(Reg + Index));
+       DevAddr = PCI_LIB_ADDRESS (Bus,Dev,Func,(Reg + Index));
        PciData8 = PciRead8 (DevAddr);
        Print(L"%02x ",PciData8);
        if(((Reg + Index) % 0x10) == 0xF){
@@ -325,7 +325,7 @@ PrintPciCfg (UINT8 BusNo, UINT8 DevNo, UINT8 FuncNo)
    {
      for(Index = 0x0; Index < 4; Index ++)
      {
-       DevAddr = PCI_LIB_ADDRESS (0x0,0x6,0x0,(Reg + Index));
+       DevAddr = PCI_LIB_ADDRESS (Bus,Dev,Func,(Reg + Index));
        PciData8 = PciRead8 (DevAddr);
        Print(L"%02x ",PciData8);
        if(((Reg + Index) % 0x10) == 0xF){
